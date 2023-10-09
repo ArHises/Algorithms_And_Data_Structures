@@ -1,5 +1,6 @@
 package hw03;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Хэш-таблица
@@ -15,14 +16,34 @@ public class HashMap<K, V> implements Iterable<HashMap.Entity> {
 
     class HashMapIterator implements Iterator<HashMap.Entity>{
 
+        private int currentIndex = 0;
+        private Bucket currentBucket = null;
+
         @Override
         public boolean hasNext() {
-            return false;
+            while (currentIndex < buckets.length && buckets[currentIndex] == null) {
+                currentIndex++;
+            }
+            if(currentBucket == null){
+                currentBucket = buckets[currentIndex];
+            }
+            if (currentBucket != null && currentBucket.head != null && currentBucket.head.next != null) {
+                return true;
+            }
+            return currentIndex < buckets.length;
         }
 
         @Override
         public Entity next() {
-            return null;
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            if (currentBucket.head != null && currentBucket.head.next != null) {
+                currentBucket.head = currentBucket.head.next;
+            } else {
+                currentBucket = buckets[currentIndex++];
+            }
+            return currentBucket.head.value;
         }
     }
 
@@ -275,7 +296,7 @@ public class HashMap<K, V> implements Iterable<HashMap.Entity> {
                     + " : " 
                     + node.value.value.toString() 
                     + "\n";
-                    
+
                 node = node.next;
             }
             return data;

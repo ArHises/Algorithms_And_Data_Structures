@@ -23,11 +23,11 @@ public class Program {
 
         String searchResult = hashMap.get("+7900111223307");
 
-        System.out.println(hashMap);
+        // System.out.println(hashMap);
 
-        // for (HashMap.Entity entuty : hashMap) {
-        //     System.out.printf("%s - %s", entuty.key, entuty.value);
-        // }
+        for (HashMap.Entity entity : hashMap) {
+            System.out.printf("%s - %s \n", entity.key, entity.value);
+        }
     }
 
 }
